@@ -1,0 +1,102 @@
+public class College
+{
+    //instance variables
+	private String collegeName;
+	private String collegeType;
+	private String state;
+	private double averageAnnualWeather;
+	private int population;
+	private int averageSATScore;
+	private boolean isThereSnow;
+	private double tuitionCost;
+	private double discountedTuition;
+    
+	//zero arg constructor
+	public College()
+	{
+    	collegeName = "UCLA";
+    	collegeType = "public university";
+    	state = "California";
+    	averageAnnualWeather = 70;
+    	population = 35000;
+    	averageSATScore = 2100;
+    	isThereSnow = false;
+    	tuitionCost = 33000;
+	}
+    
+	//multi-arg constructor
+	public College(String collegeName, String collegeType, String state, double averageAnnualWeather, int population, int averageSATScore, boolean isThereSnow, double tuitionCost)
+	{
+    	this.collegeName = collegeName;
+    	this.collegeType = collegeType;
+    	this.state = state;
+    	this.averageAnnualWeather = averageAnnualWeather;
+    	this.population = population;
+    	this.averageSATScore = averageSATScore;
+    	this.isThereSnow = isThereSnow;
+    	this.tuitionCost = tuitionCost;
+	}
+    
+	//discounted tuition method
+	public double discountedTuition(double tuitionCost)
+	{
+    	discountedTuition = this.tuitionCost * .75;
+    	return discountedTuition;
+	}
+    
+	//method that returns a sure admission based on SAT Score
+	public double SATScoreForAdmission()
+	{
+    	averageSATScore += 100;
+    	return averageSATScore;
+	}
+    
+	//setter method
+	public void setAverageWeather(double w)
+	{
+    	w = averageAnnualWeather;
+	}
+    //getter for weather
+	public double getAverageWeather()
+	{
+    	return averageAnnualWeather;
+	}
+    
+	public String getState()
+	{
+    	return state;
+	}
+    
+
+public int expectedAnnualPopulationIncrease()
+{
+population = population *1.05;
+return “Expected annual population increase” + population;
+}
+
+	public String getCollegeName()
+	{
+    	return collegeName;
+	}
+    
+	//toString method will print out all of my fields in a neat paragraph that describes the college
+	public String toString()
+	{
+    	String snow;
+    	if(isThereSnow)
+    	{
+     	snow = "It can snow here. ";   
+    	}
+    	else
+    	{
+     	snow = "There's no snow here. ";
+    	}
+   	 
+    	String output =  "\n\n\n" + collegeName + " is a " + collegeType + " located in " + state
+                  	+ " with weather averaging " + averageAnnualWeather + " degrees anually." + "\n"
+                  	+  snow + "There are " + population + " students on campus and the average SAT score for admitted freshman is "
+                  	+ averageSATScore + "\n" + "Finally, it costs " + tuitionCost + " to attend.";
+    	return output;
+	}
+}
+
