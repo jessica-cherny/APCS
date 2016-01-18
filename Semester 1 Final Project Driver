@@ -1,0 +1,18 @@
+public class CollegeDriver
+{
+	public static void main(String [] args)
+	{
+   	 
+    	College UCLA = new College();
+    	System.out.println(UCLA.toString());
+    	System.out.println("The new tuition after scholarships is " + UCLA.discountedTuition(33000));
+   	 
+    	College Harvard = new College("Harvard", "private university", "Massachusetts", 52, 21000, 2400, true, 60000);
+    	System.out.println(Harvard.toString());
+    	System.out.println("Tuition after scholarships: " + Harvard.discountedTuition(60000));
+    	System.out.println("SAT Score needed for definite admission: " + UCLA.SATScoreForAdmission());
+   	 
+	}
+}
+
+
