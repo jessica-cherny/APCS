@@ -1,0 +1,43 @@
+public class Example1
+{
+    public static void main (String [] args)
+    {
+        String [][] holidays = {{"January", "February", "March", "April",
+        "May", "June", "July", "August", "September", "October", "November", "December"},
+        {"MLK", "VDay", "StPatty", "Easter", "MemDay", "FathersDay", "Mothersday", "School", "LaborDay",
+         "Halloween", "Thanksgiving", "Xmas"}};
+         
+         
+        for (int i = 0; i < holidays.length; i++)
+        {
+            for(int j = 0; j < holidays[i].length; j++)
+            {
+              System.out.print(holidays[i][j] + "  ");  
+            
+            }
+            System.out.println();
+        }
+    }
+}
+
+
+public class Example2
+{
+    public static void main (String [] args)
+    {
+        String [][] favorites = {{"Wade", "Ariana Grande", "Black Eyed Peas", "Iggy Azalea", "Bruno Mars"},
+        {"Kossiver", "Coldplay", "Beatles", "Jason Mraz"}, {"Rainaldi", "Led Zeppelin", "Queen", "The Doors"}};
+         
+         
+        for (int i = 0; i < favorites.length; i++)
+        {
+            System.out.print(favorites[i][0] + ": ");
+            for(int j = 1; j < favorites[i].length; j++)
+            {
+              System.out.print(favorites[i][j] + " , ");  
+            
+            }
+            System.out.println();
+        }
+    }
+}
