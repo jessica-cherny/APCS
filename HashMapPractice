@@ -1,0 +1,182 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Iterator;
+import java.util.HashSet;
+import java.util.Set;
+
+
+public class MyHashMap<K, V> implements Map61B<K, V> {
+    HashSet<K> myHashSet = new HashSet();
+
+    private static final double DEFAULT_LOAD_FACTOR = .5;
+    private static final int DEFAULT_INITIAL_SIZE = 8;
+    private static final int RESIZE_FACTOR = 2;
+    private ArrayList<LinkedList<GenericObject>> myList;
+    private int N;
+    private double loadFactor;
+    private int numberOfElements = 0;
+
+    public class GenericObject {
+        public K key;
+        public V val;
+
+        public GenericObject(K key, V val) {
+            this.key = key;
+            this.val = val;
+        }
+
+    }
+
+    public MyHashMap() {
+        this(DEFAULT_INITIAL_SIZE, DEFAULT_LOAD_FACTOR);
+
+    }
+
+    public MyHashMap(int initialSize) {
+        this(initialSize, DEFAULT_LOAD_FACTOR);
+
+    }
+
+    public MyHashMap(int initialSize, double loadFactor) {
+        N = initialSize;
+        this.loadFactor = loadFactor;
+        myList = new ArrayList(initialSize);
+
+        for (int i = 0; i < initialSize; i++) {
+            myList.add(new LinkedList<GenericObject>());
+        }
+
+    }
+
+
+    public void clear() {
+        myList.clear();
+        numberOfElements = 0;
+
+        for (int i = 0; i < N; i++) {
+            myList.add(new LinkedList<GenericObject>());
+        }
+
+    }
+
+    /* Returns true if this map contains a mapping for the specified key. */
+    public boolean containsKey(K key) {
+        if (key == null) {
+            throw new NullPointerException("argument to contains() is null");
+        }
+        return get(key) != null;
+
+    }
+
+    /* Returns the value to which the specified key is mapped, or null if this
+     * map contains no mapping for the key. 
+     */
+    public V get(K key) {
+        if (key == null) {
+            throw new NullPointerException("argument to get() is null");
+        }
+
+        int i = 0;
+        if (key.hashCode() < 0) {
+            i = (key.hashCode() * -1) % N;
+        } else {
+            i = (key.hashCode() % N);
+        }
+
+        for (GenericObject obj : myList.get(i)) {
+            if (obj.key.equals(key)) {
+                return obj.val;
+            }
+        }
+
+        return null;
+    }
+
+    /* Returns the number of key-value mappings in this map. */
+    public int size() {
+
+        return numberOfElements;
+    }
+
+    /* Associates the specified value with the specified key in this map. */
+    public void put(K key, V value) {
+        if (key == null) {
+            throw new NullPointerException("first argument to put() is null");
+        }
+
+
+        if (((double) numberOfElements) / N >= loadFactor) {
+            resize(RESIZE_FACTOR * N);
+        }
+
+
+        GenericObject obj = new GenericObject(key, value);
+
+        int i = key.hashCode();
+        if (i < 0) {
+            i = i * -1;
+        }
+        i = i % N;
+
+
+        if (!containsKey(key)) {
+            myList.get(i).add(obj);
+            myHashSet.add(key);
+            numberOfElements++;
+
+        } else {
+            for (GenericObject obj2 : myList.get(i)) {
+                if (obj2.key.equals(key)) {
+                    obj2.val = value;
+                }
+            }
+
+
+        }
+    }
+
+    /* Returns a Set view of the keys contained in this map. */
+    public Set<K> keySet() {
+        return myHashSet;
+    }
+
+    public Iterator<K> iterator() {
+        return myHashSet.iterator();
+
+    }
+
+    private void resize(int newCapacity) {
+        ArrayList<LinkedList<GenericObject>> temp = new ArrayList<LinkedList<GenericObject>>();
+        for (int i = 0; i < newCapacity; i++) {
+            temp.add(new LinkedList<GenericObject>());
+        }
+
+        for (int i = 0; i < N; i++) {
+            for (GenericObject obj : myList.get(i)) {
+                int myHashCode = obj.key.hashCode();
+                if (myHashCode < 0) {
+                    myHashCode = myHashCode * -1;
+                }
+
+                int newBucketNum = myHashCode % newCapacity;
+
+                temp.get(newBucketNum).add(obj);
+            }
+        }
+
+        myList = temp;
+        N = newCapacity;
+    }
+
+  
+    public V remove(K key) {
+        throw new UnsupportedOperationException();
+    }
+
+    
+    public V remove(K key, V value) {
+        throw new UnsupportedOperationException();
+    }
+
+
+}
