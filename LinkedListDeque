@@ -1,0 +1,143 @@
+public class LinkedListDeque<Item> {
+	private Node sentinel;
+	private int size;
+
+	private class Node {
+		public Node prev;
+		public Item item;
+		public Node next;
+
+		public Node(Node p, Item i, Node n) {
+			prev = p;
+			item = i;
+			next = n;
+		}
+	}
+	public LinkedListDeque() { 
+		size = 0;
+		sentinel = new Node(null, null, null);
+		sentinel.prev = sentinel;
+		sentinel.next = sentinel;
+	}
+
+	public void addFirst(Item element) {
+		Node oldNode = sentinel.next;
+		Node frontNode = new Node(sentinel, element, oldNode);
+		sentinel.next = frontNode;
+		oldNode.prev = frontNode;
+		size += 1;
+	}
+
+	public void addLast(Item element) {
+		if(isEmpty()){
+			addFirst(element);
+		} else {
+			Node oldNode = sentinel.prev;
+			Node backNode = new Node(oldNode, element, sentinel);
+			sentinel.prev = backNode;
+			oldNode.next = backNode;
+			size += 1;
+		}
+	}
+
+	public boolean isEmpty() {
+		return size == 0;
+	}
+
+	public int size() {
+		return size;
+	}
+
+	public void printDeque() {
+		if (size == 0){
+			System.out.print("");
+		} else {
+			Node alreadySeen = sentinel.next;
+			while(alreadySeen != sentinel) {
+				System.out.print(alreadySeen.item + " ");
+				alreadySeen = alreadySeen.next;	
+			}
+		}
+	}
+
+	public Item removeFirst() { 
+		if(isEmpty()) {
+			return null;
+		} else if (size == 1) {
+			Item firstValue = sentinel.next.item;
+			sentinel.prev = sentinel;
+			sentinel.next = sentinel.prev;
+			size -= 1;
+			return firstValue;
+		} else {
+			Item firstValue = sentinel.next.item;         
+			Node firstNode = sentinel.next;
+			Node nextNode = firstNode.next;
+			sentinel.next = nextNode;
+			nextNode.prev = sentinel;
+			firstNode.prev = null; 
+			firstNode.next = null;
+			size -= 1;
+			return firstValue;	
+		}
+	}
+
+	public Item removeLast() {
+		if(size == 0){
+			return null;
+		}
+		else if(size == 1) {
+			Node firstNode = sentinel.next;
+			Item lastValue = firstNode.item;
+			sentinel.prev = sentinel;
+			sentinel.next = sentinel;
+			firstNode.prev = null;
+			firstNode.next = null;
+			size -= 1;
+			return lastValue;
+		} else {
+			Node lastNode = sentinel.prev;
+			Item lastValue = lastNode.item;
+			Node nodeBeforeLast = lastNode.prev;
+			nodeBeforeLast.next = sentinel;
+			sentinel.prev = nodeBeforeLast;
+			lastNode.next = null;
+			lastNode.prev = null;
+			size -= 1;
+			return lastValue;
+		}
+	}
+
+	public Item get(int index) {
+		int i = 0;
+		if(index >= size || index < 0 || size == 0){ 
+			return null;
+		} else {
+			Node alreadySeen = sentinel.next;
+			while(i != index) {
+				i++;
+				alreadySeen = alreadySeen.next;	
+			}
+			return alreadySeen.item;
+		}
+	}
+
+	private Item getRecursiveHelper(int index, Node myNode) {
+		if(index == 0) {
+			return myNode.item;
+		}
+		else {
+			return getRecursiveHelper(index - 1, myNode.next);
+		}
+	}
+
+	public Item getRecursive(int index) {
+		if(index >= size || index < 0) { 
+			return null;
+		}
+		if (size == 0) {
+			return null;
+		}
+		return getRecursiveHelper(index, sentinel.next);
+	}
+}
