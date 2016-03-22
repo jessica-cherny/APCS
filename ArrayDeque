@@ -1,0 +1,123 @@
+public class ArrayDeque<Item> {
+	private Item[] items;
+	private int size;
+	private int first;
+	private int last; 
+	private static int RFACTOR;
+	private double usageFactor;
+	
+	public ArrayDeque() {
+		items = (Item[]) new Object[8];
+		size = 0;
+		first = 0;
+		last = 1;
+		RFACTOR = 2;
+		usageFactor = 1;
+	} 
+
+	public int getFirstIndex(){
+		return first;
+	}
+
+	public int getLastIndex(){
+		return last;
+	}
+
+	public int getLength(){
+		return items.length;
+	}
+
+	public double getUsageFactor(){
+		return usageFactor;
+	}
+
+	public boolean isEmpty() {
+		return size == 0;
+	}
+
+	public int size() {
+		return size;
+	}
+
+	public Item get(int index) {
+		if (index >= size || index < 0 || size == 0) {
+			return null;
+		} else {
+			return items[(first+1+index)%items.length];
+		}
+	}
+
+	public Item removeLast() {
+		last = (last - 1 + items.length) % items.length;
+		Item removed = items[last];
+		items[last] = null;
+		size = size - 1;
+		usageFactor = (double) size/items.length;
+
+		if(items.length >= 16 && usageFactor < .25){
+			resize((int)(items.length * .5));
+		}
+		return removed;
+	}
+
+	public Item removeFirst() {
+		first = (first + 1 + items.length) % items.length;
+		Item removed = items[first];
+		items[first] = null;
+		size -= 1;
+		usageFactor = (double) size/items.length;
+
+		if(items.length >= 16 && usageFactor < .25) {
+			resize((int) (items.length * .5));
+		}
+		return removed;
+	}
+
+
+	public void addFirst(Item element) {
+		if (size == items.length){
+			resize(items.length * RFACTOR);
+		}
+		items[first] = element;
+		first = (first - 1 + items.length)%items.length;
+		size += 1;
+		usageFactor = (double) size/items.length;
+		return;
+	}
+
+	public void addLast(Item element) {
+		if (size == items.length) {
+			resize(items.length * RFACTOR);
+		}
+		items[last] = element;
+		last = (last + 1 + items.length)%items.length; 
+		size += 1;
+		usageFactor = (double) size/items.length;
+		
+		return;
+	}
+
+	private int plusOne(int input){
+		return (input + 1 + items.length)%items.length;
+	}
+
+	private void resize(int capacity) {
+		Item[] resizedArray = (Item[]) new Object[capacity];
+		int numberOfElementsLeft = last;
+		int numberOfElementsRight = items.length - ((first + 1) % items.length);
+		System.arraycopy(items, 0, resizedArray, 0, numberOfElementsLeft);
+		System.arraycopy(items, plusOne(first), resizedArray, capacity - numberOfElementsRight, numberOfElementsRight);
+		items = resizedArray;
+		first = capacity - numberOfElementsRight - 1;
+		usageFactor = (double) size/items.length;
+		return; 
+	}
+
+
+	public void printDeque() {
+		for(int i = 0; i < size; i++) {
+			System.out.print(get(i) + " ");
+		}
+		System.out.println();
+	}
+}
